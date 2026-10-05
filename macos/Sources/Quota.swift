@@ -1,5 +1,6 @@
 import Foundation
 import CoreFoundation
+import CoreGraphics
 
 struct QuotaWindow {
     let remaining: Double?
