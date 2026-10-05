@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Codex 额度条 · Mac 使用说明</title>
+<style>body{font:16px/1.8 system-ui,sans-serif;max-width:760px;margin:48px auto;padding:0 24px;color:#222}code{background:#eee;padding:3px 6px;border-radius:4px}h1{font-size:28px}h2{font-size:20px;margin-top:32px}@media(prefers-color-scheme:dark){body{background:#181818;color:#ddd}code{background:#333}a{color:#a6caff}}</style>
+<h1>Codex 额度条 · Mac 使用说明</h1>
+<p>macOS 13+，Apple Silicon / Intel 通用应用。Mac 版为测试版；输入框定位和登录启动需要真机验证。</p>
+<h2>第一次使用</h2>
+<ol><li>将应用拖入“应用程序”后打开，顶部菜单栏出现圆环图标。</li>
+<li>本版本尚未经 Apple Developer ID 签名或公证。如系统拦截，请在首次尝试打开后，从“系统设置 → 隐私与安全性”允许你信任的应用。无需关闭系统安全保护。</li>
+<li>在“隐私与安全性 → 辅助功能”允许 Codex 额度条；不需要屏幕录制权限。</li>
+<li>打开 Codex 并登录。如找不到 CLI，请安装 <a href="https://github.com/openai/codex#installing-and-running-codex">官方 Codex CLI</a>，执行 <code>codex login</code> 登录同一账户。菜单中可选择 CLI 路径。</li>
+<li>切回 Codex 并等待几秒钟，数据约每 60 秒更新。</li></ol>
+<h2>自动跟随</h2>
+<p>菜单栏圆环 → 勾选“随 macOS 登录启动”。需要批准时，从“通用 → 登录项与扩展”允许。以后系统登录后后台等待 Codex，Codex 打开后显示。手动退出后不会立即重启，下次登录恢复。</p>
+<h2>读数与排版</h2>
+<p><code>周剩余 69% | 时钟 6天15小时 | 日历 10/10 14:16</code> 为示例。日期统一为北京时间；空间不足时精简信息，悬停可看完整详情。读取失败保留旧数据并标记待更新，不自行补满额度。</p>
+<h2>未显示怎么办</h2>
+<p>确认菜单栏图标存在、辅助功能权限已开启、Codex 在前台且未最小化。检查菜单中的 CLI / 登录提示，然后“立即刷新”。若找不到输入框，选择“手动校准位置”，关闭提示后切回 Codex，拖到输入框底部空白处，右键“完成校准”。位置按窗口比例保存；“恢复自动定位”可取消校准。</p>
+<h2>隐私与更新</h2>
+<p>只读取本机 app-server 额度接口；不发起模型任务，不读取输入正文，不保存令牌。偏好仅包含位置、额度类型和 CLI 路径。更新前退出应用，用新版本替换后重新打开；系统可能要求重新批准权限。移除前取消登录启动，再退出并将应用移到废纸篓。</p>
+</html>

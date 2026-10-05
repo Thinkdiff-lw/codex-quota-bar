@@ -1,0 +1,77 @@
+name: Build and release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and self-test
+        shell: pwsh
+        run: |
+          ./windows/build.ps1
+          $process = Start-Process -FilePath ./windows/CodexQuotaBar.exe -ArgumentList '--self-test' -PassThru -Wait
+          if ($process.ExitCode -ne 0) { throw 'Windows self-test failed' }
+          $report = Get-Content ./windows/test-result.json -Raw | ConvertFrom-Json
+          if (-not $report.passed) { throw 'Windows checks failed' }
+          Write-Output 'Windows self-test passed'
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/windows | Out-Null
+          $files = @('CodexQuotaBar.exe','启动额度条.cmd','退出额度条.cmd','开启自动跟随.cmd','关闭自动跟随.cmd','使用说明.md')
+          foreach ($name in $files) { Copy-Item -LiteralPath (Join-Path windows $name) -Destination dist/windows }
+          Copy-Item LICENSE dist/windows
+          Compress-Archive -Path dist/windows/* -DestinationPath dist/CodexQuotaBar-Windows.zip -Force
+          $hash = (Get-FileHash dist/CodexQuotaBar-Windows.zip -Algorithm SHA256).Hash.ToLower()
+          "$hash  CodexQuotaBar-Windows.zip" | Set-Content dist/CodexQuotaBar-Windows.zip.sha256 -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Windows
+          path: |
+            dist/CodexQuotaBar-Windows.zip
+            dist/CodexQuotaBar-Windows.zip.sha256
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Core and stdio tests
+        run: bash macos/test.sh
+      - name: Universal application
+        run: bash macos/build.sh
+      - name: Checksum
+        run: |
+          cd macos/dist
+          shasum -a 256 CodexQuotaBar-macOS.zip > CodexQuotaBar-macOS.zip.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macOS
+          path: |
+            macos/dist/CodexQuotaBar-macOS.zip
+            macos/dist/CodexQuotaBar-macOS.zip.sha256
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" artifacts/*.zip artifacts/*.sha256 --verify-tag --title "Codex 额度条 $GITHUB_REF_NAME" --notes-file docs/release-notes.md

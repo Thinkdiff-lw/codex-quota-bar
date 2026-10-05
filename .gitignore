@@ -1,0 +1,15 @@
+**/build/
+**/dist/
+*.exe
+*.zip
+*.app/
+.DS_Store
+settings.json
+codex-path.txt
+*-result.json
+diagnostics.json
+runtime-state.json
+layout-probe.json
+startup.log
+enable-debug.flag
+*.tmp

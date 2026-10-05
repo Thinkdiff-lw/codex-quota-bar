@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="250" viewBox="0 0 960 250">
+  <rect width="960" height="250" rx="18" fill="#171717"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Microsoft YaHei UI,PingFang SC,sans-serif" font-weight="400">
+    <rect x="30" y="28" width="900" height="170" rx="22" fill="#2b2b2b"/>
+    <text x="54" y="73" font-size="20" fill="#909090">输入你的问题…</text>
+    <g stroke="#b5b5b5" stroke-width="2" fill="none" stroke-linecap="round">
+      <path d="M58 145h20m-10-10v20"/>
+      <circle cx="230" cy="145" r="9" opacity=".45"/>
+      <path d="M230 136a9 9 0 1 1-8.56 6.22" stroke-width="2.5"/>
+      <path d="M405 135v20m150-20v20" stroke="#595959" stroke-width="1"/>
+      <circle cx="430" cy="145" r="9"/>
+      <path d="M430 139v6l4 3"/>
+      <rect x="573" y="138" width="17" height="16" rx="2"/>
+      <path d="M573 143h17m-13-9v7m9-7v7"/>
+    </g>
+    <g font-size="18" dominant-baseline="central">
+      <text x="92" y="145" fill="#969696">更改权限</text>
+      <text x="249" y="145" fill="#b5b5b5">周剩余</text>
+      <text x="312" y="145" fill="#ededed">69%</text>
+      <text x="448" y="145" fill="#b5b5b5">6天15小时</text>
+      <text x="601" y="145" fill="#b5b5b5">10/10 14:16</text>
+      <text x="779" y="145" fill="#c4c4c4">选择模型</text>
+    </g>
+    <circle cx="891" cy="145" r="18" fill="#ededed"/>
+    <path d="M891 153v-16m-6 6 6-6 6 6" stroke="#444" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <text x="480" y="229" text-anchor="middle" font-size="14" fill="#808080">布局示意 · 非真实账户数据 · 实际宽度不足时自动精简</text>
+  </g>
+</svg>
