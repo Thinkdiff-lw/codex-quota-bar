@@ -23,7 +23,7 @@
 
 打开 Codex 桌面版并登录你的账户。工具优先查找桌面版内的 CLI，再查找 `/opt/homebrew/bin/codex`、`/usr/local/bin/codex` 和 PATH。
 
-若菜单提示“未找到 Codex CLI”，先按 [Codex 官方安装说明](https://github.com/openai/codex#installing-and-running-codex) 安装 CLI，再在终端执行：
+若菜单提示“未找到 Codex CLI”，先按 [Codex 官方安装说明](https://github.com/openai/codex#installing-and-running-codex-cli) 安装 CLI，再在终端执行：
 
 ```bash
 codex login
