@@ -23,6 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var calibrating = false
     private var targetPID: pid_t?
     private var status = "等待 Codex 打开"
+    private var placementStatus: String?
     private var stale = false
     private var timer: Timer?
 
@@ -63,7 +64,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if targetPID != nil {
                 targetPID = nil; lastRead = .distantPast
                 serverQueue.async { [weak self] in self?.server?.close(); self?.server = nil; self?.serverPath = nil }
-                status = "等待 Codex 打开"; updateMenu()
+                status = "等待 Codex 打开"; placementStatus = nil; updateMenu()
             }
             return
         }
@@ -73,7 +74,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let front = NSWorkspace.shared.frontmostApplication, isCodex(front),
               !paused, AXIsProcessTrusted() else {
             panel.orderOut(nil)
-            if !AXIsProcessTrusted() { status = "请开启辅助功能权限"; updateMenu() }
+            if !AXIsProcessTrusted() { placementStatus = "请开启辅助功能权限"; updateMenu() }
             return
         }
         guard !dragging && !anchorBusy else { return }
@@ -92,8 +93,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                       !self.paused && !self.dragging else { self.panel.orderOut(nil); return }
                 guard let geometry = geometry else {
                     self.panel.orderOut(nil)
-                    self.status = "暂未找到输入框，可从菜单手动校准"; self.updateMenu(); return
+                    self.placementStatus = "暂未找到输入框，可从菜单手动校准"; self.updateMenu(); return
                 }
+                if self.placementStatus != nil { self.placementStatus = nil; self.updateMenu() }
                 self.lastOwner = geometry.owner
                 let frame: CGRect
                 if manualMode {
@@ -180,8 +182,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func updateMenu() {
         let menu = NSMenu()
-        let info = NSMenuItem(title: status, action: nil, keyEquivalent: "")
+        let info = NSMenuItem(title: placementStatus ?? status, action: nil, keyEquivalent: "")
         info.isEnabled = false; menu.addItem(info)
+        if placementStatus != nil && placementStatus != status {
+            let connection = NSMenuItem(title: status, action: nil, keyEquivalent: "")
+            connection.isEnabled = false; menu.addItem(connection)
+        }
         for quota in view.windows {
             let row = NSMenuItem(title: "\(quota.label) \(quota.percentage) · \(quota.countdown() ?? "重置未知")", action: nil, keyEquivalent: "")
             row.isEnabled = false; menu.addItem(row)

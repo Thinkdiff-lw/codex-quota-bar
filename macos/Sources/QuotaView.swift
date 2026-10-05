@@ -43,7 +43,8 @@ final class QuotaView: NSView {
         let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .regular)
             .applying(NSImage.SymbolConfiguration(paletteColors: [secondary]))
         let icon = image.withSymbolConfiguration(config) ?? image
-        icon.draw(in: NSRect(x: x, y: (bounds.height - 16) / 2, width: 16, height: 16))
+        icon.draw(in: NSRect(x: x, y: (bounds.height - 16) / 2, width: 16, height: 16),
+                  from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: nil)
     }
 
     override func draw(_ dirtyRect: NSRect) {
@@ -66,8 +67,13 @@ final class QuotaView: NSView {
             arc.lineCapStyle = .round
             arc.stroke()
         }
-        text(quota.label, x: 26)
-        let labelWidth = (quota.label as NSString).size(withAttributes: [.font: font]).width
+        var label = quota.label
+        let valueWidth = (quota.percentage as NSString).size(withAttributes: [.font: font]).width
+        if 26 + (label as NSString).size(withAttributes: [.font: font]).width + 6 + valueWidth > bounds.width - 4 {
+            label = "剩余"
+        }
+        text(label, x: 26)
+        let labelWidth = (label as NSString).size(withAttributes: [.font: font]).width
         let percentageX = 26 + ceil(labelWidth) + 6
         text(quota.percentage, x: percentageX, bright: true)
         var x = percentageX + 44
