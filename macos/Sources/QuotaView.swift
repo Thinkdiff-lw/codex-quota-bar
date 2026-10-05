@@ -15,6 +15,7 @@ final class QuotaView: NSView {
     var contextMenu: NSMenu?
     private var dragPoint: NSPoint?
     override var isFlipped: Bool { true }
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
 
     private let font = NSFont.systemFont(ofSize: 12, weight: .regular)
     private var secondary: NSColor { NSColor.secondaryLabelColor }

@@ -30,6 +30,7 @@ enum AccessibilityAnchor {
         if candidate == nil { candidate = (attribute(application, kAXWindowsAttribute) as? [AXUIElement])?.first }
         guard let candidate = candidate, CFGetTypeID(candidate) == AXUIElementGetTypeID() else { return nil }
         let win = candidate as! AXUIElement
+        if attribute(win, kAXMinimizedAttribute) as? Bool == true { return nil }
         guard let r = rect(win) else { return nil }
         return (win, r)
     }

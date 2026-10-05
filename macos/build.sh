@@ -17,6 +17,6 @@ cp ../docs/macos.html "$app/Contents/Resources/使用说明.html"
 cp ../docs/macos.md dist/使用说明.md
 codesign --force --sign - "$app"
 codesign --verify --strict "$app"
-lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/CodexQuotaBar"
+lipo "$app/Contents/MacOS/CodexQuotaBar" -verify_arch arm64 x86_64
 ditto -c -k --sequesterRsrc --keepParent "$app" dist/CodexQuotaBar-macOS.zip
 echo "Built universal app: $app"
